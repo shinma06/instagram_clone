@@ -10,19 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_26_030643) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_03_025156) do
   create_table "bookmarks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "image", null: false
-    t.text "description", null: false
+    t.bigint "post_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   create_table "comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "image", null: false
-    t.text "description", null: false
+    t.bigint "post_id", null: false
+    t.text "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -32,6 +31,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_030643) do
     t.bigint "target_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["target_id"], name: "index_direct_messages_on_target_id"
+    t.index ["user_id"], name: "index_direct_messages_on_user_id"
   end
 
   create_table "likes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -43,15 +44,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_030643) do
 
   create_table "posts", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "image", null: false
     t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "relationships", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.bigint "follow_id", null: false
-    t.bigint "follower_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -62,7 +55,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_26_030643) do
     t.string "nickname", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["email"], name: "index_users_on_email"
   end
 
+  add_foreign_key "direct_messages", "users"
+  add_foreign_key "direct_messages", "users", column: "target_id"
 end

@@ -1,4 +1,4 @@
-class FollowsController < ApplicationController
+class FollowersController < ApplicationController
   def index
   end
 

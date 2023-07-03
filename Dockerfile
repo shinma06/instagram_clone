@@ -7,7 +7,7 @@ ENV LANG=C.UTF-8
 WORKDIR /app
 COPY Gemfile /app/Gemfile
 COPY Gemfile.lock /app/Gemfile.lock
-# RUN bundle install
+RUN bundle install
 
 COPY containers/entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
